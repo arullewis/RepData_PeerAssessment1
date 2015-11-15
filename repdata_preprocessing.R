@@ -75,8 +75,10 @@ newactivityperday <- group_by(newactivitydata, date)
 newactivitysummary <-
     summarise(newactivityperday,totalsteps = sum(steps, na.rm = TRUE))
 
-#plot histogram
-hist(newactivitysummary$totalsteps,main = 'Total Number of Steps Taken Each day - NA removed', xlab = 'Number of Steps')
+#plot histogram comparision
+par(mfrow=c(2,1))
+hist(newactivitysummary$totalsteps,main = 'Total Number of Steps Taken Each day without NA', xlab = 'Number of Steps')
+hist(activitysummary$totalsteps,main = 'Total Number of Steps Taken Each day with NA', xlab = 'Number of Steps')
 
 #mean of total stpes per day
 print(mean(activitysummary$totalsteps))
@@ -99,8 +101,10 @@ newactivitydatawgs<-summarise(newactivitydatawg, avgsteps = mean(steps,na.rm = T
 
 
 #plot
-g<-ggplot(data = newactivitydatawgs,aes(interval,avgsteps))+facet_grid(.~weekday)+geom_line()
-print(g)
+g<-ggplot(data = newactivitydatawgs,aes(interval,avgsteps))+facet_grid(weekday~.)
+g<-g+geom_line()+ ggtitle('Average number of steps - Weekend vs Weekdays')
+g<-g+xlab('Interval')+ylab('Average Steps')
+#print(g)
 
 
 
